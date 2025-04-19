@@ -1,0 +1,20 @@
+#!/bin/bash
+
+progresso() {
+  local progresso=0
+  while [ $progresso -le 100 ]; do
+    echo -ne "Progresso: ["
+    for ((i = 0; i < progresso; i += 2)); do
+      echo -n "#"
+    done
+    for ((i = progresso; i < 100; i += 2)); do
+      echo -n "-"
+    done
+    echo -ne "] $progresso%\r"
+    sleep 0.05
+    ((progresso += 2))
+  done
+  echo
+}
+
+progresso

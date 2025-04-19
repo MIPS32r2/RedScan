@@ -1,0 +1,12 @@
+#!/bin/bash
+
+digitar() {
+    texto="$1"
+    for ((i=0; i<${#texto}; i++)); do
+        printf "%s" "${texto:$i:1}"
+        sleep 0.03
+    done
+    echo
+}
+
+digitar "Analisando logs... Isso pode levar alguns segundos."

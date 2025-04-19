@@ -1,0 +1,76 @@
+#!/bin/bash
+set -e
+
+echo -n "Digite o caminho do arquivo de log: "
+read LOG_FILE
+
+if [[ ! -f "$LOG_FILE" ]]; then
+  echo "Arquivo não encontrado"
+  exit 1
+fi
+
+# Função para animação
+analise() {
+  local pid=$!
+  local delay=0.1
+  local spin='|/-\'
+
+  while kill -0 $pid 2>/dev/null; do
+    for i in $(seq 0 3); do
+      printf "\r[%c] Analisando o arquivo: %s" "${spin:$i:1}" "$(basename "$LOG_FILE")"
+      sleep $delay
+    done
+  done
+
+  for i in $(seq 0 3); do
+    printf "\r[%c] Analisando ataques de XSS..." "${spin:$i:1}"
+    sleep $delay
+  done
+
+  for i in $(seq 0 3); do
+    printf "\r[%c] Detectar tentativas de SQL Injection..." "${spin:$i:1}"
+    sleep $delay
+  done
+
+  for i in $(seq 0 3); do
+    printf "\r[%c] Detectar varredura de diretórios (Directory Traversal)..." "${spin:$i:1}"
+    sleep $delay
+  done
+
+  for i in $(seq 0 3); do
+    printf "\r[%c] Detectar varredura de diretórios (Directory Traversal)..." "${spin:$i:1}"
+    sleep $delay
+  done
+
+  for i in $(seq 0 3); do
+    printf "\r[%c] Detectar varredura de diretórios (Directory Traversal)..." "${spin:$i:1}"
+    sleep $delay
+  done
+
+  for i in $(seq 0 3); do
+    printf "\r[%c] Detectar varredura de diretórios (Directory Traversal)..." "${spin:$i:1}"
+    sleep $delay
+  done
+
+  for i in $(seq 0 3); do
+    printf "\r[%c] Detectar varredura de diretórios (Directory Traversal)..." "${spin:$i:1}"
+    sleep $delay
+  done
+
+  printf "\r[✔] Análise de '%s' concluída!        \n" "$(basename "$LOG_FILE")"
+}
+
+# Inicia a análise em background e exibe animação
+(grep -icE "<script|%3Cscript" "$LOG_FILE" >resultado_xss.txt) &
+analise
+
+# Mostra resultados
+echo -e "\nPossíveis XSS encontrados:"
+if [[ -s resultado_xss.txt ]]; then
+  cat resultado_xss.txt
+else
+  echo "Nenhum possível ataque de XSS encontrado."
+fi
+
+# Limpa o arquivo temporário
+rm -f resultado_xss.txt
